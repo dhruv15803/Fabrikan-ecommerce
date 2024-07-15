@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isAdmin:{
+      type:Boolean,
+      default:false,
+    },
     shipping_addresses: [addressSchema],
   },
   { timestamps: true }

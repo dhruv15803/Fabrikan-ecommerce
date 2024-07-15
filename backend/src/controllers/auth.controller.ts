@@ -19,7 +19,13 @@ const registerUser = async (req:Request,res:Response) => {
         if(user) return res.status(400).json({"success":false,"message":"Account already exists"});
         
         const hashedPassword = await bcrypt.hash(newUser.password,10);
-        const registeredUser = await User.create({email:newUser.email.trim().toLowerCase(),firstName:newUser.firstName,lastName:newUser.lastName,password:hashedPassword});
+
+        // check if credentials are of admin or not
+        let isAdmin = false;
+        if(newUser.email.trim().toLowerCase()===process.env.ADMIN_EMAIL && newUser.password===process.env.ADMIN_PASSWORD) {
+            isAdmin = true;
+        }
+        const registeredUser = await User.create({email:newUser.email.trim().toLowerCase(),firstName:newUser.firstName,lastName:newUser.lastName,password:hashedPassword,isAdmin:isAdmin});
         
         const token = jwt.sign({userId:registeredUser._id},process.env.JWT_SECRET as string,{
             expiresIn:'1d',

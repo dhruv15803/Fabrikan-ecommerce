@@ -6,10 +6,12 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { isStrongPassword } from "../utils";
 import { Checkbox } from "../components/ui/checkbox";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { backendUrl } from "../App";
+import { AppContext } from "../Contexts/AppContext";
+import { AppContextType } from "../types";
 
 const registerFormSchema = z
   .object({
@@ -40,6 +42,7 @@ const Register = () => {
   } = useForm<registerFormType>({ resolver: zodResolver(registerFormSchema) });
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const [registerError, setRegisterError] = useState<string>("");
+  const {loggedInUser,setLoggedInUser} = useContext(AppContext) as AppContextType;
   const navigate = useNavigate();
 
   const onsubmit: SubmitHandler<{
@@ -51,7 +54,7 @@ const Register = () => {
   }> = async (data) => {
     try {
       setRegisterError("");
-      await axios.post(
+      const response = await axios.post(
         `${backendUrl}/api/auth/register`,
         {
           email: data.email,
@@ -61,6 +64,7 @@ const Register = () => {
         },
         { withCredentials: true }
       );
+      setLoggedInUser(response.data.user);
       navigate("/");
     } catch (error: any) {
       console.log(error);
@@ -69,6 +73,8 @@ const Register = () => {
       );
     }
   };
+
+  if(loggedInUser!==null) return <Navigate to="/"/>
 
   return (
     <>

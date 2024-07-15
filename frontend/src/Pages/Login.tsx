@@ -8,7 +8,7 @@ import { Button } from "../components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { backendUrl } from "../App";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AppContext } from "../Contexts/AppContext";
 import { AppContextType } from "../types";
 
@@ -26,27 +26,37 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm<loginFormType>({ resolver: zodResolver(loginFormSchema) });
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-  const [loginError,setLoginError] = useState<string>("");
+  const [loginError, setLoginError] = useState<string>("");
   const navigate = useNavigate();
-  const {setLoggedInUser} = useContext(AppContext) as AppContextType;
+  const { setLoggedInUser, loggedInUser } = useContext(
+    AppContext
+  ) as AppContextType;
 
   const onsubmit: SubmitHandler<{
     email: string;
     password: string;
   }> = async (data) => {
     try {
-        setLoginError("");
-        const response = await axios.post(`${backendUrl}/api/auth/login`,{
-            email:data.email,
-            password:data.password,
-        },{withCredentials:true});
-        console.log(response);
-        setLoggedInUser(response.data.user);
-        navigate('/');
-    } catch (error:any) {
-        setLoginError((error.response.data as {success:boolean;message:string}).message);
+      setLoginError("");
+      const response = await axios.post(
+        `${backendUrl}/api/auth/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        { withCredentials: true }
+      );
+      console.log(response);
+      setLoggedInUser(response.data.user);
+      navigate("/");
+    } catch (error: any) {
+      setLoginError(
+        (error.response.data as { success: boolean; message: string }).message
+      );
     }
   };
+
+  if (loggedInUser !== null) return <Navigate to="/" />;
 
   return (
     <>
@@ -82,7 +92,9 @@ const Login = () => {
               <div className="text-red-500">{errors.password.message}</div>
             )}
           </div>
-          {loginError!=="" && <div className="text-red-500">{loginError}</div>}
+          {loginError !== "" && (
+            <div className="text-red-500">{loginError}</div>
+          )}
           <div className="flex items-center gap-1">
             <Checkbox
               checked={isShowPassword}
@@ -90,7 +102,9 @@ const Login = () => {
             />
             <span className="font-semibold">Show password</span>
           </div>
-          <Button disabled={isSubmitting}>{isSubmitting ? 'Logging in...':'Login'}</Button>
+          <Button disabled={isSubmitting}>
+            {isSubmitting ? "Logging in..." : "Login"}
+          </Button>
         </form>
       </div>
     </>

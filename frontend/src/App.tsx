@@ -3,6 +3,10 @@ import Layout from "./Layouts/Layout";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 import AppContextProvider from "./Contexts/AppContext";
+import AdminProducts from "./Pages/AdminProducts";
+import AdminLayout from "./Layouts/AdminLayout";
+import AdminCategories from "./Pages/AdminCategories";
+import AdminChildCategories from "./Pages/AdminChildCategories";
 export const backendUrl = "http://localhost:5000";
 
 function App() {
@@ -15,6 +19,11 @@ function App() {
               <Route index element={<>Home page</>} />
               <Route path="register" element={<Register />} />
               <Route path="login" element={<Login />} />
+              <Route path="admin" element={<AdminLayout/>}>
+                <Route index element={<AdminProducts/>}/>
+                <Route path="categories" element={<AdminCategories/>}/>
+                <Route path="categories/:parentId" element={<AdminChildCategories/>}/>
+              </Route>
             </Route>
           </Routes>
         </Router>

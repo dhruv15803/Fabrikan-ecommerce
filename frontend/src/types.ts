@@ -10,4 +10,11 @@ export type User = {
     email:string;
     firstName:string;
     lastName:string;
+    isAdmin:boolean;
+}
+
+export type Category = {
+    _id:string;
+    categoryName:string;
+    parentCategory:string;
 }

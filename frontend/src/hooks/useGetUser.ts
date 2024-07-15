@@ -13,6 +13,7 @@ export const useGetUser = () => {
             const response = await axios.get(`${backendUrl}/api/auth/user`,{
                 withCredentials:true,
             });
+            console.log(response);
             if(response.data.success) {
                 setUser(response.data.user);
             } else {
