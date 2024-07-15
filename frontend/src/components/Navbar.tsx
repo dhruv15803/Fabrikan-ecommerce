@@ -76,6 +76,7 @@ const Navbar = () => {
                   {loggedInUser.isAdmin && (
                     <DropdownMenuItem onClick={() => navigate('/admin')}>Admin panel</DropdownMenuItem>
                   )}
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>Your orders</DropdownMenuItem>
                   <DropdownMenuItem className="flex items-center gap-2">
                     <ShoppingCart />

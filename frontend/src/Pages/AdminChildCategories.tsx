@@ -87,8 +87,12 @@ const AdminChildCategories = () => {
     <>
       <div className="flex flex-col mx-10">
         <div>
-          <Button className="text-red-500 text-lg flex items-center gap-1" onClick={() => navigate(-1)} variant="link">
-            <RxArrowLeft/>
+          <Button
+            className="text-red-500 text-lg flex items-center gap-1"
+            onClick={() => navigate(-1)}
+            variant="link"
+          >
+            <RxArrowLeft />
             <span>Back</span>
           </Button>
         </div>

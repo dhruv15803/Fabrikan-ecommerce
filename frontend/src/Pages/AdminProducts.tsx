@@ -1,11 +1,11 @@
-import React from 'react'
 
-const Admin = () => {
+const AdminProducts = () => {
   return (
     <>
-     Admin products
+
+
     </>
   )
 }
 
-export default Admin;
+export default AdminProducts;
