@@ -44,7 +44,10 @@ const getParentCategories = async (req, res) => {
 const getCategoriesByParent = async (req, res) => {
     try {
         const { parentCategoryId } = req.params;
-        const categories = await Category.find({ parentCategory: parentCategoryId });
+        const parentCategory = await Category.findById(parentCategoryId);
+        if (!parentCategory)
+            return res.status(400).json({ "success": false, "message": "Invalid parent id" });
+        const categories = await Category.find({ parentCategory: parentCategory._id });
         res.status(200).json({ "success": true, categories });
     }
     catch (error) {

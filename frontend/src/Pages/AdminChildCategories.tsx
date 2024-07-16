@@ -10,6 +10,7 @@ import { backendUrl } from "../App";
 import { useState } from "react";
 import { ArrowLeftFromLineIcon } from "lucide-react";
 import { RxArrowLeft } from "react-icons/rx";
+import AdminCategoryAttribute from "../components/AdminCategoryAttribute";
 
 const AdminChildCategories = () => {
   const navigate = useNavigate();
@@ -85,17 +86,20 @@ const AdminChildCategories = () => {
 
   return (
     <>
+      <div>
+        <Button
+          className="text-red-500 text-lg flex items-center gap-1"
+          onClick={() => navigate(-1)}
+          variant="link"
+        >
+          <RxArrowLeft />
+          <span>Back</span>
+        </Button>
+      </div>
+      <div className="mb-8">
+        {category !== null && <AdminCategoryAttribute category={category} />}
+      </div>
       <div className="flex flex-col mx-10">
-        <div>
-          <Button
-            className="text-red-500 text-lg flex items-center gap-1"
-            onClick={() => navigate(-1)}
-            variant="link"
-          >
-            <RxArrowLeft />
-            <span>Back</span>
-          </Button>
-        </div>
         <div className="flex items-center gap-4">
           <span className="text-xl font-semibold">
             {category?.categoryName}

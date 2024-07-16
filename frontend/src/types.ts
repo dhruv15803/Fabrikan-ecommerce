@@ -18,3 +18,10 @@ export type Category = {
     categoryName:string;
     parentCategory:string;
 }
+
+export type Attribute = {
+    _id:string;
+    attributeName:string;
+    attributeValues:string[];
+    categoryId:string;
+}
