@@ -136,6 +136,27 @@ const removeAttributeValue = async (req:Request,res:Response) => {
 }
 
 
+
+const editAttributeValue = async (req:Request,res:Response) => {
+    try {
+        const {newAttributeValue,valueId}:{newAttributeValue:string;valueId:string} = req.body;
+        const userId = req.userId;
+        const user = await User.findById(userId);
+        if(!user || !user.isAdmin) return res.status(400).json({"success":false,"message":"User not authorized"});
+        const value = await AttributeValue.findById(valueId);
+        if(!value) return res.status(400).json({"success":false,"message":"Invalid value id"});
+        // check if there is any same attributes with value as new value under attribute
+        const attributeValue = await AttributeValue.findOne({$and:[{attributeId:value.attributeId},{attributeValue:newAttributeValue.trim().toLowerCase()}]});
+        if(attributeValue) return res.status(400).json({"success":false,"message":"Attribute value already exists"});
+        const updatedAttributeValue = await AttributeValue.findByIdAndUpdate({_id:value._id},{$set:{attributeValue:newAttributeValue.trim().toLowerCase()}},{new:true});
+        res.status(200).json({"success":true,"message":"updated attribute value",updatedAttributeValue});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({"success":false,"message":"Something went wrong when updating attribute value"});
+    }
+}
+
+
 export {
     createAttribute,
     removeAttribute,
@@ -144,4 +165,5 @@ export {
     addAttributeValue,
     getAttributeValues,
     removeAttributeValue,
+    editAttributeValue,
 }

@@ -6,7 +6,8 @@ import { backendUrl } from "../App";
 import { Attribute, AttributeValue } from "../types";
 import { useGetAttributeValues } from "../hooks/useGetAttributeValues";
 import Loader from "./Loader";
-import { Trash2 } from "lucide-react";
+import { EditIcon, Trash2 } from "lucide-react";
+import AdminAttributeValueCard from "./AdminAttributeValueCard";
 
 type Props = {
   attribute: Attribute;
@@ -19,20 +20,24 @@ const AdminAttributeValues = ({ attribute }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [attriubteValueError, setAttributeValueError] = useState<string>("");
 
-  const removeAttributeValue = async (valueId:string) => {
+  const removeAttributeValue = async (valueId: string) => {
     const oldValues = attributeValues;
     try {
-        const newAttributeValues = attributeValues.filter((value) => value._id!==valueId);
-        setAttributeValues(newAttributeValues);
-        await axios.delete(`${backendUrl}/api/attribute/attributeValue/${valueId}`,{
-            withCredentials:true,
-        });
+      const newAttributeValues = attributeValues.filter(
+        (value) => value._id !== valueId
+      );
+      setAttributeValues(newAttributeValues);
+      await axios.delete(
+        `${backendUrl}/api/attribute/attributeValue/${valueId}`,
+        {
+          withCredentials: true,
+        }
+      );
     } catch (error) {
-        console.log(error);
-        setAttributeValues(oldValues);
+      console.log(error);
+      setAttributeValues(oldValues);
     }
-  }
-
+  };
 
   const handleAddAttribute = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,10 +102,15 @@ const AdminAttributeValues = ({ attribute }: Props) => {
         ) : (
           <>
             {attributeValues.map((value) => {
-              return <div key={value._id} className="flex items-center justify-between border-b p-2">
-                <span>{value.attributeValue}</span>
-                <button onClick={() => removeAttributeValue(value._id)} className="text-red-500"><Trash2/></button>
-              </div>;
+              return (
+                <AdminAttributeValueCard
+                  key={value._id}
+                  value={value}
+                  removeAttributeValue={removeAttributeValue}
+                  attributeValues={attributeValues}
+                  setAttributeValues={setAttributeValues}
+                />
+              );
             })}
           </>
         )}
