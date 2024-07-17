@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState } from "react";
 import { AttributeValue } from "../types";
-import { Cross, EditIcon, Trash2 } from "lucide-react";
+import { EditIcon, Trash2 } from "lucide-react";
 import { Input } from "./ui/input";
 import { RxCross1 } from "react-icons/rx";
 import { Button } from "./ui/button";

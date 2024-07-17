@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetCategory } from "../hooks/useGetCategory";
 import Loader from "../components/Loader";
 import { useGetCategoriesByParent } from "../hooks/useGetCategoriesByParent";
@@ -8,7 +8,6 @@ import AdminCategoryCard from "../components/AdminCategoryCard";
 import axios from "axios";
 import { backendUrl } from "../App";
 import { useState } from "react";
-import { ArrowLeftFromLineIcon } from "lucide-react";
 import { RxArrowLeft } from "react-icons/rx";
 import AdminCategoryAttribute from "../components/AdminCategoryAttribute";
 

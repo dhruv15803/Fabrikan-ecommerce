@@ -7,7 +7,7 @@ export const AppContext = createContext<AppContextType | null>(null);
 
 
 const AppContextProvider = ({children}:{children:React.ReactNode}) => {
-    const {isLoading,user,setUser} = useGetUser();
+    const {user,setUser,isLoading} = useGetUser();
 
     if(isLoading) {
         return (

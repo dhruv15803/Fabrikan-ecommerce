@@ -3,10 +3,9 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { backendUrl } from "../App";
-import { Attribute, AttributeValue } from "../types";
+import { Attribute} from "../types";
 import { useGetAttributeValues } from "../hooks/useGetAttributeValues";
 import Loader from "./Loader";
-import { EditIcon, Trash2 } from "lucide-react";
 import AdminAttributeValueCard from "./AdminAttributeValueCard";
 
 type Props = {

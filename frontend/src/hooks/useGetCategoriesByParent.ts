@@ -9,6 +9,7 @@ export const useGetCategoriesByParent = (parentId:string) => {
 
     useEffect(() => {
         const fetchCategoriesByParentId = async () => {
+            if(parentId.trim()==="") return;
             try {
                 setIsCategoriesLoading(true);
                 const response = await axios.get(`${backendUrl}/api/category/categories/${parentId}`,{
