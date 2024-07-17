@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Category } from "../models/category.model.js";
 import { User } from "../models/user.model.js";
 import { Attribute } from "../models/attribute.model.js";
+import { AttributeValue } from "../models/attributeValue.model.js";
 
 const createAttribute = async (req:Request,res:Response) => {
     try {
@@ -85,9 +86,62 @@ const editAttribute = async (req:Request,res:Response) => {
     }
 }
 
+const addAttributeValue = async (req:Request,res:Response) => {
+    try {
+        const {attributeValue,attributeId}:{attributeValue:string;attributeId:string} = req.body;
+        const userId = req.userId;
+        const user = await User.findById(userId);
+        if(!user || !user.isAdmin) return res.status(400).json({"success":false,"message":"User not authorized"});
+        const attribute = await Attribute.findById(attributeId);
+        if(!attribute) return res.status(400).json({"success":false,"message":"Invalid attribute id"});
+        // make sure no duplicate values under the same attribute.
+        const value = await AttributeValue.findOne({$and:[{attributeId:attribute._id},{attributeValue:attributeValue.trim().toLowerCase()}]});
+        if(value) return res.status(400).json({"success":false,"message":"Attribute value already exists"});
+        const newAttributeValue = new AttributeValue({attributeId:attribute._id,attributeValue:attributeValue.trim().toLowerCase()});
+        await newAttributeValue.save();
+        res.status(201).json({"success":true,newAttributeValue});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({"success":false,"message":"Something went wrong when adding attribute value"});
+    }
+}
+
+const getAttributeValues = async (req:Request,res:Response) => {
+    try {
+        const {attributeId} = req.params;
+        const attribute = await Attribute.findById(attributeId);
+        if(!attribute) return res.status(400).json({"success":false,"message":"Invalid attribute Id"});
+        const attributeValues = await AttributeValue.find({attributeId:attribute._id});
+        res.status(200).json({"success":true,attributeValues});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({"success":false,"message":"Something went wrong when fetching attribute values"});
+    }
+}
+
+const removeAttributeValue = async (req:Request,res:Response) => {
+    try {
+        const {valueId} = req.params;
+        const userId = req.userId;
+        const user = await User.findById(userId);
+        if(!user || !user.isAdmin) return res.status(400).json({"success":false,"message":"User not authorized"});
+        const value = await AttributeValue.findById(valueId);
+        if(!value) return res.status(400).json({"success":false,"message":"Attribute value does not exist"});
+        await AttributeValue.deleteOne({_id:value._id});
+        res.status(200).json({"success":true,"message":"deleted attribute value successfully"});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({"success":false,"message":"Something went wrong when deleting attribute value"});
+    }
+}
+
+
 export {
     createAttribute,
     removeAttribute,
     getAttributesById,
     editAttribute,
+    addAttributeValue,
+    getAttributeValues,
+    removeAttributeValue,
 }

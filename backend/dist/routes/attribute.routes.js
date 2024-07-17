@@ -1,9 +1,13 @@
 import express from 'express';
-import { createAttribute, editAttribute, getAttributesById, removeAttribute } from '../controllers/attribute.controller.js';
+import { addAttributeValue, createAttribute, editAttribute, getAttributesById, getAttributeValues, removeAttribute, removeAttributeValue } from '../controllers/attribute.controller.js';
 import { authenticateUser } from '../middlewares/authenticateUser.js';
 const router = express.Router();
 router.get('/attributes/:categoryId', getAttributesById);
 router.post('/create', authenticateUser, createAttribute);
 router.delete('/delete/:id', authenticateUser, removeAttribute);
 router.put('/edit', authenticateUser, editAttribute);
+// attribute values
+router.post('/attributeValue/add', authenticateUser, addAttributeValue);
+router.get('/attributeValues/:attributeId', getAttributeValues);
+router.delete('/attributeValue/:valueId', authenticateUser, removeAttributeValue);
 export default router;

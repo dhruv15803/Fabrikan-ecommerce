@@ -25,3 +25,9 @@ export type Attribute = {
     attributeValues:string[];
     categoryId:string;
 }
+
+export type AttributeValue = {
+    _id:string;
+    attributeValue:string;
+    attributeId:string;
+}

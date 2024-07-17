@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import axios from "axios";
 import { backendUrl } from "../App";
+import AdminAttributeValues from "./AdminAttributeValues";
 
 type Props = {
   attribute: Attribute;
@@ -22,6 +23,8 @@ const AdminAttributeCard = ({
   const [newAttributeName, setNewAttributeName] = useState<string>("");
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [attributeEditError, setAttributeEditError] = useState<string>("");
+  const [isAddAttributeValues, setIsAddAttributeValues] =
+    useState<boolean>(false);
 
   const editAttribute = async (id: string) => {
     const oldAttributes = attributes;
@@ -82,7 +85,7 @@ const AdminAttributeCard = ({
   return (
     <>
       <div className="flex items-center justify-between border-b p-4">
-        <div className="text-lg font-semibold">
+        <div>
           {isAttributeEdit ? (
             <div className="flex flex-col gap-2">
               <Input
@@ -95,10 +98,29 @@ const AdminAttributeCard = ({
               )}
             </div>
           ) : (
-            <>{attribute.attributeName}</>
+            <>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-semibold">
+                    {attribute.attributeName}
+                  </span>
+                  <button
+                    onClick={() => setIsAddAttributeValues((prev) => !prev)}
+                    className="border rounded-xl p-2 hover:bg-black hover:text-white hover:duration-300"
+                  >
+                    {isAddAttributeValues ? "-" : "+"}
+                  </button>
+                </div>
+                {isAddAttributeValues && (
+                  <>
+                    <AdminAttributeValues attribute={attribute} />
+                  </>
+                )}
+              </div>
+            </>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        {!isAddAttributeValues && <div className="flex items-center gap-2">
           {!isAttributeEdit && (
             <Button
               onClick={() => removeAttribute(attribute._id)}
@@ -118,7 +140,7 @@ const AdminAttributeCard = ({
           <Button onClick={toggleEdit} variant="outline">
             {isAttributeEdit ? "Cancel" : "Edit"}
           </Button>
-        </div>
+        </div>}
       </div>
     </>
   );
