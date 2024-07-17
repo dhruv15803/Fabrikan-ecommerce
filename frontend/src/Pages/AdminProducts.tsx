@@ -8,8 +8,12 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { useGetCategories } from "../hooks/useGetCategories";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetCategoriesByParent } from "../hooks/useGetCategoriesByParent";
+import axios from "axios";
+import { backendUrl } from "../App";
+import Loader from "../components/Loader";
+import { Button } from "../components/ui/button";
 
 const AdminProducts = () => {
   // form fields
@@ -18,18 +22,64 @@ const AdminProducts = () => {
   const [productPrice, setProductPrice] = useState<number>(0);
   const [productCategory, setProductCategory] = useState<string>("");
   const [productSubCategory1, setProductSubCategory1] = useState<string>("");
+  const [productFile,setProductFile] = useState<File | null>(null);
+  const [productImageUrl,setProductImageUrl] = useState<string>("");
   // data
   const { isLoading, parentCategories: categories } = useGetCategories();
   const {
     categories: subCategories1,
     isCategoriesLoading: isSubCategories1Loading,
   } = useGetCategoriesByParent(productCategory);
+  const [isImageLoading,setIsImageLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getImageUrl = async () => {
+      if(productFile===null) return;
+      try {
+        setIsImageLoading(true);
+        const response = await axios.post(`${backendUrl}/api/file/upload`,{
+          productFile,
+        },{
+          headers:{
+            'Content-Type':'multipart/form-data'
+          }
+        });
+        setProductImageUrl(response.data.url);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsImageLoading(false);
+      }
+    }
+    getImageUrl();
+  },[productFile]);
 
   return (
     <>
-      <div className="flex flex-col gap-4 mx-10">
+      <div className="flex flex-col gap-4 mx-10 mb-4">
         <div className="text-xl font-semibold">Manage products</div>
         <form className="p-4 border flex flex-col rounded-lg shadow-md gap-4">
+          <div className="flex flex-col gap-2">
+            {isImageLoading ? <div className="flex items-center gap-2">
+              <Loader height="60" width="60" color="black"/>
+              <span>Image loading</span>
+            </div> : <>
+              <img className="w-56 aspect-auto" src={productImageUrl} alt="" />
+            </>}
+            <div className="flex items-center gap-2">
+            <label
+              className="border rounded-lg p-4 w-fit hover:bg-gray-500 hover:text-white hover:duration-300"
+              htmlFor="productFile"
+            >
+              {productImageUrl!=="" ? "Update image" : "Upload image"}
+            </label>
+            {productImageUrl!=="" && <Button onClick={() => {
+              setProductFile(null);
+              setProductImageUrl("");
+            }} variant={"destructive"}>Remove image</Button>}
+            </div>
+            <input hidden onChange={(e) => setProductFile(e.target.files![0])} type="file" id="productFile"/>
+          </div>
           <div className="flex flex-col gap-2">
             <Label className="text-lg" htmlFor="productName">
               Product Name
@@ -114,6 +164,7 @@ const AdminProducts = () => {
               </Select>
             </div>
           )}
+          <Button>Add product</Button>
         </form>
       </div>
     </>
