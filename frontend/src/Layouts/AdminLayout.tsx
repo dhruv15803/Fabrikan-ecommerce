@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Sheet,
   SheetContent,
@@ -17,7 +16,7 @@ const AdminLayout = () => {
         <div className="text-2xl font-semibold">Admin Panel</div>
         <Sheet>
           <SheetTrigger className="text-2xl" asChild>
-            <RxHamburgerMenu />
+            <button><RxHamburgerMenu/></button>
           </SheetTrigger>
           <SheetContent>
             <SheetHeader className="mb-4">

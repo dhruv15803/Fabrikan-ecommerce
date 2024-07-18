@@ -15,6 +15,7 @@ import { backendUrl } from "../App";
 import Loader from "../components/Loader";
 import { Button } from "../components/ui/button";
 
+
 const AdminProducts = () => {
   // form fields
   const [productName, setProductName] = useState<string>("");
@@ -31,6 +32,42 @@ const AdminProducts = () => {
     isCategoriesLoading: isSubCategories1Loading,
   } = useGetCategoriesByParent(productCategory);
   const [isImageLoading,setIsImageLoading] = useState<boolean>(false);
+  const [isSubmittingProduct,setIsSubmittingProduct] = useState<boolean>(false);
+
+  // errors
+  const [addProductError,setAddProductError] = useState<string>("");
+
+
+  const handleCreateProduct = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setAddProductError("");
+    if(productName.trim()==="" || productDescription.trim()==="" || productPrice <=0 || productCategory==="" || productSubCategory1==="" || productImageUrl==="") {
+      setAddProductError("Please enter all fields");
+      return;
+    }
+    try {
+      setIsSubmittingProduct(true);
+      const response = await axios.post(`${backendUrl}/api/product/create`,{
+        productName,
+        productDescription,
+        productPrice,
+        productCategoryId:productCategory,
+        productSubCategory1Id:productSubCategory1,
+        productImageUrl,
+      },{withCredentials:true});
+      console.log(response);
+      setProductName("");
+      setProductDescription("");
+      setProductPrice(0);
+      setProductCategory("");
+      setProductSubCategory1("");
+    } catch (error:any) {
+      console.log(error);
+      setAddProductError(error.response.data.message);
+    } finally {
+      setIsSubmittingProduct(false);
+    }
+  }
 
   useEffect(() => {
     const getImageUrl = async () => {
@@ -58,7 +95,7 @@ const AdminProducts = () => {
     <>
       <div className="flex flex-col gap-4 mx-10 mb-4">
         <div className="text-xl font-semibold">Manage products</div>
-        <form className="p-4 border flex flex-col rounded-lg shadow-md gap-4">
+        <form onSubmit={(e) => handleCreateProduct(e)} className="p-4 border flex flex-col rounded-lg shadow-md gap-4">
           <div className="flex flex-col gap-2">
             {isImageLoading ? <div className="flex items-center gap-2">
               <Loader height="60" width="60" color="black"/>
@@ -164,7 +201,10 @@ const AdminProducts = () => {
               </Select>
             </div>
           )}
-          <Button>Add product</Button>
+          {addProductError!=="" && <div className="my-2 text-red-500 font-semibold">
+              {addProductError}
+            </div>}
+          <Button disabled={isSubmittingProduct} className="my-4">{isSubmittingProduct ? 'Adding product...' : 'Add product'}</Button>
         </form>
       </div>
     </>
