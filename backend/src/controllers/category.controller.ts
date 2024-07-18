@@ -81,7 +81,6 @@ const removeCategory = async (req:Request,res:Response) => {
     }
 }
 
-
 const editCategory = async (req:Request,res:Response) => {
     try {
         const {newCategoryName,parentCategoryId,categoryId}:{newCategoryName:string;parentCategoryId:string;categoryId:string} = req.body;

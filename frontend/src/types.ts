@@ -31,3 +31,12 @@ export type AttributeValue = {
     attributeValue:string;
     attributeId:string;
 }
+
+export type Product = {
+    _id:string;
+    productName:string;
+    productDescription:string;
+    productImage:string;
+    productPrice:number;
+    categoryId:Category;
+}

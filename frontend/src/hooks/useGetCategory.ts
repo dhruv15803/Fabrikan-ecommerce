@@ -8,6 +8,7 @@ export const useGetCategory = (id: string) => {
   const [isCategoryLoading, setIsCategoryLoading] = useState<boolean>(false);
 
   const fetchCategoryById = async () => {
+    if(id==='') return;
     try {
       setIsCategoryLoading(true);
       const response = await axios.get(`${backendUrl}/api/category/${id}`, {
@@ -25,5 +26,5 @@ export const useGetCategory = (id: string) => {
     fetchCategoryById();
   }, [id]);
 
-  return { category, isCategoryLoading};
+  return {category, isCategoryLoading};
 };
