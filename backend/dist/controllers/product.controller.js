@@ -51,13 +51,13 @@ const getAllProducts = async (req, res) => {
         const { parentCategoryId, subCategoryId } = req.query;
         if (parentCategoryId !== "" && subCategoryId === "") {
             const subCategories = await Category.find({ parentCategory: parentCategoryId });
-            products = await Product.find({ categoryId: { $in: subCategories } });
+            products = await Product.find({ categoryId: { $in: subCategories } }).populate('categoryId');
         }
         else if (parentCategoryId !== "" && subCategoryId !== "") {
-            products = await Product.find({ categoryId: subCategoryId });
+            products = await Product.find({ categoryId: subCategoryId }).populate('categoryId');
         }
         else {
-            products = await Product.find({}).populate("categoryId");
+            products = await Product.find({}).populate("categoryId").populate('categoryId');
         }
         res.status(200).json({ success: true, products });
     }

@@ -8,6 +8,7 @@ import AdminLayout from "./Layouts/AdminLayout";
 import AdminCategories from "./Pages/AdminCategories";
 import AdminChildCategories from "./Pages/AdminChildCategories";
 import AdminProductDetail from "./Pages/AdminProductDetail";
+import Products from "./Pages/Products";
 export const backendUrl = "http://localhost:5000";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                 <Route path="categories/:parentId" element={<AdminChildCategories/>}/>
                 <Route path="product/:productId" element={<AdminProductDetail/>}/>
               </Route>
+              <Route path="products" element={<Products/>}/>
             </Route>
           </Routes>
         </Router>

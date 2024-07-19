@@ -5,6 +5,7 @@ import { useGetCategories } from "../hooks/useGetCategories";
 import { useGetCategoriesByParent } from "../hooks/useGetCategoriesByParent";
 import axios from "axios";
 import { backendUrl } from "../App";
+import { Button } from "./ui/button";
 
 type Props = {
     setProducts:React.Dispatch<SetStateAction<Product[]>>;
@@ -20,6 +21,7 @@ const FilterProduct = ({setProducts}:Props) => {
         const fetchProductsData = async () => {
             try {
                 const response = await axios.get(`${backendUrl}/api/product/products?parentCategoryId=${parentCategoryId}&subCategoryId=${subCategoryId}`);
+                console.log(response);
                 setProducts(response.data.products);
             } catch (error) {
                 console.log(error);
@@ -27,6 +29,10 @@ const FilterProduct = ({setProducts}:Props) => {
         }
         fetchProductsData();
     },[parentCategoryId,subCategoryId]);
+    useEffect(() => {
+        setSubCategoryId("");
+    }, [parentCategoryId]);
+
 
   return (
     <>
@@ -57,6 +63,12 @@ const FilterProduct = ({setProducts}:Props) => {
                 </SelectContent>
             </Select>}
       </div>
+      {(parentCategoryId!=="" || subCategoryId!=="") && <div className="mx-10 my-2 flex justify-end">
+        <Button onClick={() => {
+            setParentCategoryId("");
+            setSubCategoryId("");
+        }}>Clear filters</Button>
+      </div>}
     </>
   );
 };
