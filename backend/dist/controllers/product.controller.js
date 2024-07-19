@@ -46,8 +46,19 @@ const createProduct = async (req, res) => {
     }
 };
 const getAllProducts = async (req, res) => {
+    let products;
     try {
-        const products = await Product.find({}).populate("categoryId");
+        const { parentCategoryId, subCategoryId } = req.query;
+        if (parentCategoryId !== "" && subCategoryId === "") {
+            const subCategories = await Category.find({ parentCategory: parentCategoryId });
+            products = await Product.find({ categoryId: { $in: subCategories } });
+        }
+        else if (parentCategoryId !== "" && subCategoryId !== "") {
+            products = await Product.find({ categoryId: subCategoryId });
+        }
+        else {
+            products = await Product.find({}).populate("categoryId");
+        }
         res.status(200).json({ success: true, products });
     }
     catch (error) {

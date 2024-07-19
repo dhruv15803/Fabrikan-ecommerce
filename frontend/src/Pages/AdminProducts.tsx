@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 import AdminProductCard from "../components/AdminProductCard";
 import axios from "axios";
 import { backendUrl } from "../App";
+import FilterProduct from "../components/FilterProduct";
 
 const AdminProducts = () => {
   const {
@@ -49,6 +50,7 @@ const AdminProducts = () => {
           <span className="text-lg font-semibold">Loading products...</span>
         </div>
       )}
+      <FilterProduct setProducts={setProducts} />
       {!isProductsLoading && products.length !== 0 && (
         <div className="flex flex-wrap mx-10 my-4 gap-2 p-2">
           {products.map((product) => {
