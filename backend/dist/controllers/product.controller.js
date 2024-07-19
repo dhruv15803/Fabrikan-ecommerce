@@ -54,6 +54,10 @@ const getAllProducts = async (req, res) => {
             products = await Product.find({ categoryId: { $in: subCategories } }).populate('categoryId');
         }
         else if (parentCategoryId !== "" && subCategoryId !== "") {
+            // check if subCategory falls under parent category
+            const subCategory = await Category.findById(subCategoryId);
+            if (String(subCategory?.parentCategory) !== parentCategoryId)
+                return res.status(400).json({ "success": false, "message": "Subcategory does not fall under parent category" });
             products = await Product.find({ categoryId: subCategoryId }).populate('categoryId');
         }
         else {

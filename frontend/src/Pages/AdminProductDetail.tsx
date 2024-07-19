@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetProduct } from "../hooks/useGetProduct";
 import Loader from "../components/Loader";
 import { Button } from "../components/ui/button";
@@ -17,8 +17,10 @@ import { useGetCategories } from "../hooks/useGetCategories";
 import { useGetCategoriesByParent } from "../hooks/useGetCategoriesByParent";
 import axios from "axios";
 import { backendUrl } from "../App";
+import { ArrowLeft } from "lucide-react";
 
 const AdminProductDetail = () => {
+  const navigate = useNavigate();
   const { productId } = useParams();
   if (!productId) return <>No product id</>;
   const { isLoading, product, setProduct } = useGetProduct(productId);
@@ -38,7 +40,7 @@ const AdminProductDetail = () => {
   const [newProductCategory, setNewProductCategory] = useState<string>("");
   const [newSubCategory, setNewSubCategory] = useState<string>("");
   const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
-  const [isSavingProduct,setIsSavingProduct] = useState<boolean>(false);
+  const [isSavingProduct, setIsSavingProduct] = useState<boolean>(false);
 
   const {
     categories: subCategories,
@@ -139,6 +141,12 @@ const AdminProductDetail = () => {
         </>
       ) : (
         <>
+          <div className="flex mx-10 md:mx-16 lg:mx-[20%] mb-4">
+            <Button onClick={() => navigate(-1)} variant="link">
+              <ArrowLeft/>
+              <span>Back</span>
+            </Button>
+          </div>
           <div className="flex gap-4 mx-10 md:mx-16 lg:mx-[20%] border rounded-lg p-2">
             <div className="flex flex-col gap-2">
               {" "}
@@ -284,7 +292,9 @@ const AdminProductDetail = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  {editProductError!=="" && <div className="text-red-500">{editProductError}</div>}
+                  {editProductError !== "" && (
+                    <div className="text-red-500">{editProductError}</div>
+                  )}
                 </>
               ) : (
                 <>
@@ -309,7 +319,11 @@ const AdminProductDetail = () => {
                   {isEditProduct ? "Cancel" : "Edit product"}
                 </Button>
                 {isEditProduct && (
-                  <Button disabled={isSavingProduct} onClick={editProduct} variant="outline">
+                  <Button
+                    disabled={isSavingProduct}
+                    onClick={editProduct}
+                    variant="outline"
+                  >
                     Save changes
                   </Button>
                 )}
