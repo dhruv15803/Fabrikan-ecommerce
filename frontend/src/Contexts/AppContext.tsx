@@ -1,5 +1,5 @@
-import React, { createContext, useState } from 'react'
-import { AppContextType, Cart } from '../types';
+import React, { createContext } from 'react'
+import { AppContextType } from '../types';
 import { useGetUser } from '../hooks/useGetUser';
 import Loader from '../components/Loader';
 
@@ -8,7 +8,6 @@ export const AppContext = createContext<AppContextType | null>(null);
 
 const AppContextProvider = ({children}:{children:React.ReactNode}) => {
     const {user,setUser,isLoading} = useGetUser();
-    const [cart,setCart] = useState<null | Cart>(null);
 
     if(isLoading) {
         return (
@@ -25,8 +24,6 @@ const AppContextProvider = ({children}:{children:React.ReactNode}) => {
         <AppContext.Provider value={{
             loggedInUser:user,
             setLoggedInUser:setUser,
-            cart:cart,
-            setCart:setCart,
         }}>
             {children}
         </AppContext.Provider>
