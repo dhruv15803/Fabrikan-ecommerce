@@ -8,6 +8,7 @@ import categoryRoutes from './routes/category.routes.js'
 import productRoutes from './routes/product.routes.js'
 import fileRoutes from './routes/file.routes.js'
 import attributeRoutes from './routes/attribute.routes.js'
+import cartRoutes from './routes/cart.routes.js'
 
 const app = express()
 const port = process.env.PORT
@@ -32,6 +33,7 @@ app.use('/api/category',categoryRoutes);
 app.use('/api/product',productRoutes);
 app.use('/api/file',fileRoutes);
 app.use('/api/attribute',attributeRoutes);
+app.use('/api/cart',cartRoutes);
 
 app.listen(port,() => {
     console.log(`Server running at http://localhost:${port}`)

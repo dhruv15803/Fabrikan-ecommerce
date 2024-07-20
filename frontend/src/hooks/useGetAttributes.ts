@@ -10,6 +10,7 @@ export const useGetAttributes = (categoryId: string) => {
       
   useEffect(() => {
     const fetchAttributesByCategory = async () => {
+      if(categoryId==="") return;
       try {
         setIsAttributesLoading(true);
         const response = await axios.get(

@@ -9,6 +9,8 @@ import AdminCategories from "./Pages/AdminCategories";
 import AdminChildCategories from "./Pages/AdminChildCategories";
 import AdminProductDetail from "./Pages/AdminProductDetail";
 import Products from "./Pages/Products";
+import ProductDetail from "./Pages/ProductDetail";
+import Cart from "./Pages/Cart";
 export const backendUrl = "http://localhost:5000";
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
                 <Route path="product/:productId" element={<AdminProductDetail/>}/>
               </Route>
               <Route path="products" element={<Products/>}/>
+              <Route path="products/:productId" element={<ProductDetail/>}/>
+              <Route path="cart" element={<Cart/>}/>
             </Route>
           </Routes>
         </Router>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AdminAddProductForm from "../components/AdminAddProductForm";
 import { Button } from "../components/ui/button";
 import { useGetProducts } from "../hooks/useGetProducts";
@@ -134,7 +134,7 @@ const AdminProducts = () => {
           <span className="text-lg font-semibold">Loading products...</span>
         </div>
       )}
-      {!isProductsLoading && products.length !== 0 && (
+      {!isProductsLoading && products.length !== 0 ?  (
         <div className="flex flex-wrap mx-10 my-4 gap-2 p-2">
           {products.map((product) => {
             return (
@@ -146,7 +146,11 @@ const AdminProducts = () => {
             );
           })}
         </div>
-      )}
+      ):<>
+        <div className="flex justify-center items-center gap-2">
+          <span className="text-gray-500 text-xl">You have no products</span>
+        </div>
+      </>}
     </>
   );
 };

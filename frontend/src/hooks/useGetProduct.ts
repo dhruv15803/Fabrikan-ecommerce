@@ -10,9 +10,9 @@ export const useGetProduct = (productId:string) => {
 
     useEffect(() => {
         const controller = new AbortController();
-
         const fetchProduct = async () => {
             try {
+                if(productId==="") return;
                 setIsLoading(true);
                 const response = await axios.get(`${backendUrl}/api/product/${productId}`,{
                     signal:controller.signal,

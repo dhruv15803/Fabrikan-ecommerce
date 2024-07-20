@@ -2,7 +2,9 @@ import { SetStateAction } from "react";
 
 export type AppContextType = {
     loggedInUser:User | null;
-    setLoggedInUser:React.Dispatch<SetStateAction<User | null>>
+    setLoggedInUser:React.Dispatch<SetStateAction<User | null>>;
+    cart:Cart | null;
+    setCart:React.Dispatch<SetStateAction<Cart | null>>
 }
 
 export type User = {
@@ -39,4 +41,16 @@ export type Product = {
     productImage:string;
     productPrice:number;
     categoryId:Category;
+}
+
+export type CartItem = {
+    productId:string;
+    cartItemQty:number;
+    cartItemAttributes:{attributeName:string;attributeValue:string}[];
+}
+
+export type Cart = {
+    _id:string;
+    userId:string;
+    cartItems:CartItem[];
 }

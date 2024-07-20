@@ -59,6 +59,10 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex items-center gap-4">
+          <div onClick={() => navigate('/cart')} className="flex items-center gap-1 cursor-pointer">
+            <ShoppingCart />
+            <span>Cart</span>
+          </div>
           {loggedInUser !== null ? (
             <>
               <DropdownMenu>
@@ -74,14 +78,12 @@ const Navbar = () => {
                   <DropdownMenuLabel>{loggedInUser.email}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {loggedInUser.isAdmin && (
-                    <DropdownMenuItem onClick={() => navigate('/admin')}>Admin panel</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/admin")}>
+                      Admin panel
+                    </DropdownMenuItem>
                   )}
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>Your orders</DropdownMenuItem>
-                  <DropdownMenuItem className="flex items-center gap-2">
-                    <ShoppingCart />
-                    <span>Cart</span>
-                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               <AlertDialog>
