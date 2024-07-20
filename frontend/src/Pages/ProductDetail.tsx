@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useGetProduct } from "../hooks/useGetProduct";
 import Loader from "../components/Loader";
 import { useGetAttributes } from "../hooks/useGetAttributes";
@@ -9,6 +9,7 @@ import { backendUrl } from "../App";
 import { useContext } from "react";
 import { AppContext } from "../Contexts/AppContext";
 import { AppContextType } from "../types";
+import { ArrowLeft } from "lucide-react";
 const ProductDetail = () => {
   const { productId } = useParams();
   const { product, isLoading } = useGetProduct(productId ? productId : "");
@@ -16,7 +17,8 @@ const ProductDetail = () => {
     product ? product.categoryId._id : ""
   );
   const [searchParams, setSearchParams] = useSearchParams();
-  const {cartItems,setCartItems} = useContext(AppContext) as AppContextType;
+  const { setCartItems } = useContext(AppContext) as AppContextType;
+  const navigate = useNavigate();
 
   const addToCart = async () => {
     try {
@@ -52,7 +54,13 @@ const ProductDetail = () => {
     );
   return (
     <>
-      <div className="flex gap-4 mx-10 md:mx-16 lg:mx-[20%] border rounded-lg p-2 my-24">
+      <div className="flex mx-10 md:mx-16 lg:mx-[20%] my-16 mb-4">
+        <Button onClick={() => navigate('/products')} variant="link">
+          <ArrowLeft />
+          <span>Back</span>
+        </Button>
+      </div>
+      <div className="flex gap-4 mx-10 md:mx-16 lg:mx-[20%] border rounded-lg p-2">
         <div className="flex flex-col">
           <img src={product.productImage} className="w-40" alt="" />
         </div>

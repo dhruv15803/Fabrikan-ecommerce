@@ -32,6 +32,7 @@ const Navbar = () => {
     AppContext
   ) as AppContextType;
   const navigate = useNavigate();
+  const { cartItems } = useContext(AppContext) as AppContextType;
 
   const logoutUser = async () => {
     try {
@@ -59,12 +60,15 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex items-center gap-4">
-          <div onClick={() => navigate('/cart')} className="flex items-center gap-1 cursor-pointer">
-            <ShoppingCart />
-            <span>Cart</span>
-          </div>
           {loggedInUser !== null ? (
             <>
+              <div
+                onClick={() => navigate("/cart")}
+                className="flex items-center cursor-pointer"
+              >
+                <ShoppingCart />
+                <div className="p-1">Cart ({cartItems.length})</div>
+              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center gap-1 cursor-pointer text-gray-500 hover:text-black hover:duration-300">

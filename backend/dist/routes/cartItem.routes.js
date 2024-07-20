@@ -4,7 +4,7 @@ import { addCartItem, decrementItemQty, getCartItems, incrementItemQty, removeCa
 const router = express.Router();
 router.post('/add', authenticateUser, addCartItem);
 router.delete('/remove/:itemId', authenticateUser, removeCartItem);
-router.patch('/increment/:itemId', authenticateUser, incrementItemQty);
-router.patch('/decrement/:itemId', authenticateUser, decrementItemQty);
+router.patch('/increment', authenticateUser, incrementItemQty);
+router.patch('/decrement', authenticateUser, decrementItemQty);
 router.get('/cartItems', authenticateUser, getCartItems);
 export default router;

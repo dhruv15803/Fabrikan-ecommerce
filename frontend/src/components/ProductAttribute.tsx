@@ -34,7 +34,7 @@ const ProductAttribute = ({ attribute }: Props) => {
                 <span onClick={() => setSearchParams((params) => {
                     params.set(attribute.attributeName , value.attributeValue)
                     return params;
-                })} key={value._id} className={`text-gray-500 cursor-pointer ${searchParams.get(attribute.attributeName)===value.attributeValue? 'font-semibold text-black' : ''} `}>{value.attributeValue}</span>
+                })} key={value._id} className={`cursor-pointer ${searchParams.get(attribute.attributeName)===value.attributeValue? 'font-semibold text-black' : 'text-gray'} `}>{value.attributeValue}</span>
               );
             })}
           </>

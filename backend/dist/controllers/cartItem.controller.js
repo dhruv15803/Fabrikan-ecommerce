@@ -66,7 +66,7 @@ const removeCartItem = async (req, res) => {
 };
 const incrementItemQty = async (req, res) => {
     try {
-        const { itemId } = req.params;
+        const { itemId } = req.body;
         const userId = req.userId;
         const user = await User.findById(userId);
         if (!user)
@@ -89,7 +89,7 @@ const incrementItemQty = async (req, res) => {
 };
 const decrementItemQty = async (req, res) => {
     try {
-        const { itemId } = req.params;
+        const { itemId } = req.body;
         const userId = req.userId;
         const user = await User.findById(userId);
         if (!user)

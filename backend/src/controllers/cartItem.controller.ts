@@ -75,7 +75,7 @@ const removeCartItem = async (req:Request,res:Response) => {
 
 const incrementItemQty  = async (req:Request,res:Response) => {
     try {
-        const {itemId} = req.params;
+        const {itemId} = req.body;
         const userId = req.userId;
         const user = await User.findById(userId);
         if(!user) return res.status(400).json({"success":false,"message":"Invalid user id"});
@@ -96,7 +96,7 @@ const incrementItemQty  = async (req:Request,res:Response) => {
 
 const decrementItemQty = async (req:Request,res:Response) => {
     try {
-        const {itemId} = req.params;
+        const {itemId} = req.body;
         const userId = req.userId;
         const user = await User.findById(userId);
         if(!user) return res.status(400).json({"success":false,"message":"Invalid user id"});
