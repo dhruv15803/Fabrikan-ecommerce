@@ -3,6 +3,8 @@ import { SetStateAction } from "react";
 export type AppContextType = {
     loggedInUser:User | null;
     setLoggedInUser:React.Dispatch<SetStateAction<User | null>>;
+    cartItems:CartItem[];
+    setCartItems:React.Dispatch<SetStateAction<CartItem[]>>;
 }
 
 export type User = {
@@ -40,3 +42,12 @@ export type Product = {
     productPrice:number;
     categoryId:Category;
 }
+
+export type CartItem = {
+    _id:string;
+    productId:Product;
+    userId:string;
+    cartItemQty:number;
+    cartItemAttributes:{attributeName:string;attributeValue:string}[];
+}
+

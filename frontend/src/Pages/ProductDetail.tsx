@@ -1,14 +1,44 @@
-import { useParams} from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useGetProduct } from "../hooks/useGetProduct";
 import Loader from "../components/Loader";
 import { useGetAttributes } from "../hooks/useGetAttributes";
 import ProductAttribute from "../components/ProductAttribute";
 import { Button } from "../components/ui/button";
+import axios from "axios";
+import { backendUrl } from "../App";
+import { useContext } from "react";
+import { AppContext } from "../Contexts/AppContext";
+import { AppContextType } from "../types";
 const ProductDetail = () => {
   const { productId } = useParams();
   const { product, isLoading } = useGetProduct(productId ? productId : "");
-  const {attributes} = useGetAttributes(product ? product.categoryId._id : '');
+  const { attributes } = useGetAttributes(
+    product ? product.categoryId._id : ""
+  );
+  const [searchParams, setSearchParams] = useSearchParams();
+  const {cartItems,setCartItems} = useContext(AppContext) as AppContextType;
 
+  const addToCart = async () => {
+    try {
+      if (product === null) return;
+      let attributeValueMaps = attributes.map((attribute) => ({
+        attributeName: attribute.attributeName,
+        attributeValue: searchParams.get(attribute.attributeName),
+      }));
+      const response = await axios.post(
+        `${backendUrl}/api/cartItem/add`,
+        {
+          productId: product._id,
+          attributes: attributeValueMaps,
+        },
+        { withCredentials: true }
+      );
+      console.log(response);
+      setCartItems(response.data.latestCartItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (product === null) return <>Product not found</>;
   if (isLoading)
@@ -38,7 +68,9 @@ const ProductDetail = () => {
           </div>
           <div className="flex flex-col gap-2">
             {attributes.map((attribute) => {
-                return <ProductAttribute key={attribute._id} attribute={attribute}/>
+              return (
+                <ProductAttribute key={attribute._id} attribute={attribute} />
+              );
             })}
           </div>
           <div className="flex items-center gap-1 text-2xl my-4">
@@ -46,7 +78,7 @@ const ProductDetail = () => {
             <span>{product?.productPrice}</span>
           </div>
           <div className="flex justify-end my-2">
-            <Button>Add to cart</Button>
+            <Button onClick={addToCart}>Add to cart</Button>
           </div>
         </div>
       </div>
