@@ -48,22 +48,29 @@ const createProduct = async (req, res) => {
 const getAllProducts = async (req, res) => {
     let products;
     try {
-        const { parentCategoryId, subCategoryId } = req.query;
+        const { parentCategoryId, subCategoryId, page, perPage } = req.query;
+        const pageNumber = parseInt(page);
+        const productsPerPage = parseInt(perPage);
+        const skip = pageNumber * productsPerPage - productsPerPage;
+        let noOfProducts;
         if (parentCategoryId !== "" && subCategoryId === "") {
             const subCategories = await Category.find({ parentCategory: parentCategoryId });
-            products = await Product.find({ categoryId: { $in: subCategories } }).populate('categoryId');
+            products = await Product.find({ categoryId: { $in: subCategories } }).skip(skip).limit(productsPerPage).populate('categoryId');
+            noOfProducts = await Product.countDocuments({ categoryId: { $in: subCategories } });
         }
         else if (parentCategoryId !== "" && subCategoryId !== "") {
             // check if subCategory falls under parent category
             const subCategory = await Category.findById(subCategoryId);
             if (String(subCategory?.parentCategory) !== parentCategoryId)
                 return res.status(400).json({ "success": false, "message": "Subcategory does not fall under parent category" });
-            products = await Product.find({ categoryId: subCategoryId }).populate('categoryId');
+            products = await Product.find({ categoryId: subCategoryId }).skip(skip).limit(productsPerPage).populate('categoryId');
+            noOfProducts = await Product.countDocuments({ categoryId: subCategoryId });
         }
         else {
-            products = await Product.find({}).populate("categoryId").populate('categoryId');
+            products = await Product.find({}).populate("categoryId").skip(skip).limit(productsPerPage).populate('categoryId');
+            noOfProducts = await Product.countDocuments({});
         }
-        res.status(200).json({ success: true, products });
+        res.status(200).json({ success: true, products, noOfProducts });
     }
     catch (error) {
         console.log(error);

@@ -1,0 +1,65 @@
+[
+    {
+        "productName":"TEST",
+        "productDescription":"TEST",
+        "productPrice":250,
+        "categoryId":{
+            "$oid":"669520cafd6a83cfc33fb0f4"
+        },
+        "productImage":"https://placehold.co/1600x400"
+    },
+    {
+        "productName":"TEST 1",
+        "productDescription":"TEST 2",
+        "productPrice":350,
+        "categoryId":{
+            "$id":"669520cafd6a83cfc33fb0f4"
+        },
+        "productImage":"https://placehold.co/1600x400"
+    },
+    {
+        "productName":"TEST 3",
+        "productDescription":"TEST 3",
+        "productPrice":250,
+        "categoryId":{
+            "$oid":"669520cafd6a83cfc33fb0f4"
+        },
+        "productImage":"https://placehold.co/1600x400"
+    },
+    {
+        "productName":"TEST 4",
+        "productDescription":"TEST 4",
+        "productPrice":250,
+        "categoryId":{
+            "$oid":"669520cafd6a83cfc33fb0f4"
+        },
+        "productImage":"https://placehold.co/1600x400"
+    },
+    {
+        "productName":"TEST 5",
+        "productDescription":"TEST 5",
+        "productPrice":250,
+        "categoryId":{
+            "$oid":"669520cafd6a83cfc33fb0f4"
+        },
+        "productImage":"https://placehold.co/1600x400"
+    },
+    {
+        "productName":"TEST 6",
+        "productDescription":"TEST 6",
+        "productPrice":300,
+        "categoryId":{
+            "$oid":"669520cafd6a83cfc33fb0f4"
+        },
+        "productImage":"https://placehold.co/1600x400"
+    },
+    {
+        "productName":"TEST 7",
+        "productDescription":"TEST 7",
+        "productPrice":750,
+        "categoryId":{
+            "$oid":"669520cafd6a83cfc33fb0f4"
+        },
+        "productImage":"https://placehold.co/1600x400"
+    }
+]

@@ -14,9 +14,7 @@ const createAttribute = async (req:Request,res:Response) => {
         if(attributeName.trim()==="") return res.status(400).json({"success":false,"message":"Invalid attribute name"});
         const category = await Category.findById(categoryId);
         if(!category) return res.status(400).json({"success":false,"message":"Invalid category id"});
-    
         console.log('category found');
-
         // check for duplicate attributes in a category  ex : shirts -> size, size
         const attribute = await Attribute.findOne({$and:[{categoryId:category._id},{attributeName:attributeName.trim().toLowerCase()}]});
         if(attribute) return res.status(400).json({"success":false,"message":"Attribute already exists in this category"});

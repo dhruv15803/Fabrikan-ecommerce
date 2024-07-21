@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useGetProducts } from "../hooks/useGetProducts";
 import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";
@@ -12,20 +12,26 @@ import {
 import { useGetCategories } from "../hooks/useGetCategories";
 import { useGetCategoriesByParent } from "../hooks/useGetCategoriesByParent";
 import { Button } from "../components/ui/button";
+import Pagination from "../components/Pagination";
 
 const Products = () => {
   const { parentCategories, isLoading: isParentCategoriesLoading } =
     useGetCategories();
+  const [page, setPage] = useState<number>(1);
   const [parentCategoryId, setParentCategoryId] = useState<string>("");
   const [subCategoryId, setSubCategoryId] = useState<string>("");
   const {
     categories: subCategories,
     isCategoriesLoading: isSubCategoriesLoading,
   } = useGetCategoriesByParent(parentCategoryId);
-  const { isLoading, products } = useGetProducts(
-    parentCategoryId,
-    subCategoryId
-  );
+  const productsPerPage = 5;
+  const { isLoading, products ,noOfProducts} = useGetProducts(    parentCategoryId,
+    subCategoryId,
+    page,
+    productsPerPage);
+
+  const noOfPages = useMemo(() => Math.ceil(noOfProducts/productsPerPage),[noOfProducts])
+
   return (
     <>
       <div className="flex flex-col mx-10 my-16">
@@ -112,14 +118,21 @@ const Products = () => {
             </>
           ) : (
             <>
-              {products.length!==0 ? products.map((product) => {
-                return <ProductCard key={product._id} product={product} />;
-              }) : <>
-                <div className="flex items-center text-gray-500">No products found</div>
-              </>}
+              {products.length !== 0 ? (
+                products.map((product) => {
+                  return <ProductCard key={product._id} product={product} />;
+                })
+              ) : (
+                <>
+                  <div className="flex items-center text-gray-500">
+                    No products found
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>
+        <Pagination page={page} setPage={setPage} noOfPages={noOfPages}/>
       </div>
     </>
   );

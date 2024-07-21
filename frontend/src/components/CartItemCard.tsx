@@ -11,7 +11,11 @@ type Props = {
 const CartItemCard = ({ cartItem,removeCartItem,incrementQty,decrementQty}: Props) => {
   return (
     <>
-      <div className="flex flex-col gap-2 border rounded-lg p-4">
+    <div className="flex gap-4 border rounded-lg p-4 ">
+    <div>
+      <img className="w-60" src={cartItem.productId.productImage} alt="" />
+    </div>
+    <div className="flex flex-col gap-2 w-full">
         <div className="text-lg font-semibold">
           {cartItem.productId.productName}
         </div>
@@ -36,6 +40,7 @@ const CartItemCard = ({ cartItem,removeCartItem,incrementQty,decrementQty}: Prop
           <Button onClick={() => removeCartItem(cartItem._id)} variant="outline">Remove</Button>
         </div>
       </div>
+    </div>
     </>
   );
 };

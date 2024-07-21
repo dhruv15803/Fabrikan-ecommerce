@@ -8,8 +8,9 @@ import axios from "axios";
 import { backendUrl } from "../App";
 import { useContext } from "react";
 import { AppContext } from "../Contexts/AppContext";
-import { AppContextType } from "../types";
+import { AppContextType, CartItem } from "../types";
 import { ArrowLeft } from "lucide-react";
+import { useToast } from "../components/ui/use-toast";
 const ProductDetail = () => {
   const { productId } = useParams();
   const { product, isLoading } = useGetProduct(productId ? productId : "");
@@ -17,8 +18,9 @@ const ProductDetail = () => {
     product ? product.categoryId._id : ""
   );
   const [searchParams, setSearchParams] = useSearchParams();
-  const { setCartItems } = useContext(AppContext) as AppContextType;
+  const { setCartItems ,cartItems} = useContext(AppContext) as AppContextType;
   const navigate = useNavigate();
+  const {toast} = useToast();
 
   const addToCart = async () => {
     try {
@@ -36,7 +38,19 @@ const ProductDetail = () => {
         { withCredentials: true }
       );
       console.log(response);
-      setCartItems(response.data.latestCartItems);
+      let latestCartItems = (response.data.latestCartItems) as CartItem[];
+      setCartItems(latestCartItems);
+      if(latestCartItems.length===cartItems.length) {
+        // qty was updated
+        toast({
+          title:"Item quantity updated"
+        })
+      } else {
+        // new item was added
+        toast({
+          title:"Item added to cart"
+        })
+      }
     } catch (error) {
       console.log(error);
     }
